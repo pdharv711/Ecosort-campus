@@ -3,8 +3,8 @@ from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.oxml import OxmlElement, parse_xml
-from docx.oxml.ns import nsdecls, qn
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
@@ -71,7 +71,7 @@ def create_documentation_docx():
     r1 = h1.add_run("1. Problem Statement & Campus Waste Crisis")
     r1.font.color.rgb = DARK_GREEN
 
-    p = doc.add_paragraph(
+    doc.add_paragraph(
         "University campuses operate as micro-cities where thousands of students, faculty, and mess staff produce "
         "substantial volumes of mixed solid waste daily. In high-traffic locations such as cafeterias, lecture blocks, "
         "and hostels, waste segregation frequently fails.\n\n"
@@ -93,18 +93,25 @@ def create_documentation_docx():
     r2.font.color.rgb = DARK_GREEN
 
     doc.add_paragraph(
-        "EcoSort Campus uses natural language processing (NLP) and zero-shot entity extraction powered by IBM Granite "
+        "EcoSort Campus uses natural language processing (NLP) and zero-shot entity extraction designed around IBM Granite "
         "foundation models (watsonx.ai). The solution is implemented cleanly as a full-stack Next.js web application "
         "with an App Router API backend (/api/classify).\n\n"
         "Dual-Engine Reliability Strategy:\n"
         "1. Live IBM Granite API: Interacts with ibm/granite-3-3-8b-instruct via watsonx.ai REST endpoints when credentials are provided in .env.local.\n"
-        "2. Rule-Based Fallback Engine: Provides deterministic classification across all four campus categories for seamless evaluation, offline demo resilience, and automated testing without exposing broken states."
+        "2. Deterministic Rule-Based Fallback Engine: Provides deterministic classification across all four campus categories for seamless evaluation, offline demo resilience, and automated testing without exposing broken states.\n\n"
+        "Implementation Note on AI Execution:\n"
+        "The prototype includes IBM Granite watsonx.ai integration, with a deterministic rule-based fallback available for demonstration and offline operation. The documented benchmark results were verified using the available prototype classification pipeline."
     )
 
     # Section 3: Campus Bin System
     h3 = doc.add_heading(level=1)
     r3 = h3.add_run("3. Four-Bin Campus Classification System")
     r3.font.color.rgb = DARK_GREEN
+
+    doc.add_paragraph(
+        "EcoSort Campus categorizes all institutional waste streams into four distinct color-coded receptacles "
+        "aligned with the project's defined campus waste-management categories and operational requirements:"
+    )
 
     table = doc.add_table(rows=1, cols=4)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -135,8 +142,13 @@ def create_documentation_docx():
     # Section 4: Test Cases
     doc.add_page_break()
     h4 = doc.add_heading(level=1)
-    r4 = h4.add_run("4. Test Cases & Verification Matrix (PPT Benchmark)")
+    r4 = h4.add_run("4. Prototype Evaluation & Benchmark Test Cases")
     r4.font.color.rgb = DARK_GREEN
+
+    doc.add_paragraph(
+        "Four reference test cases defined in the original project presentation were executed against the working "
+        "EcoSort Campus prototype to verify classification, bin assignment, and safety guidance."
+    )
 
     tc_table = doc.add_table(rows=1, cols=5)
     tc_table.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -164,10 +176,15 @@ def create_documentation_docx():
             for r in row_cells[i].paragraphs[0].runs:
                 r.font.size = Pt(8)
 
-    doc.add_paragraph("\nScreenshots from the Live Application:\n")
+    doc.add_paragraph("\nNote: These tests verify prototype behavior against selected reference inputs and do not represent a statistically significant accuracy evaluation or production-scale validation.\n")
+    
     img_battery = os.path.join(SCREENSHOTS_DIR, "04_result_battery_hazardous.png")
     if os.path.exists(img_battery):
         doc.add_picture(img_battery, width=Inches(5.5))
+        p_cap = doc.add_paragraph("Figure: Verified Prototype Output for '9V dead battery'")
+        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_cap.runs[0].font.size = Pt(8)
+        p_cap.runs[0].font.italic = True
 
     # Section 5: Responsible AI
     doc.add_page_break()
@@ -192,15 +209,26 @@ def create_documentation_docx():
     # Section 6: Projected Impact & Conclusion
     doc.add_page_break()
     h6 = doc.add_heading(level=1)
-    r6 = h6.add_run("6. Projected Impact & Future Roadmap")
+    r6 = h6.add_run("6. Projected / Estimated Impact & Campus Value")
     r6.font.color.rgb = DARK_GREEN
 
     doc.add_paragraph(
-        "Projected Impact (Concept Pilot Model):\n"
-        "\"A pilot projection across a 3,000-student university campus indicates an average 70.2% overall diversion "
-        "of municipal solid waste away from local landfills within 60 days of deployment.\"\n"
-        "*(Important: This figure represents an estimated model projection from the ideation slide deck, not a measured historical deployment result).*\n\n"
-        "Future Enhancements:\n"
+        "Projected / Estimated Impact (Concept Pilot Model):\n"
+        "\"A pilot projection across a 3,000-student university campus indicates an estimated 70.2% overall diversion "
+        "of municipal solid waste away from local landfills within 60 days of deployment.\"\n\n"
+        "Important Note on Methodology:\n"
+        "The 70.2% figure represents an estimated model projection synthesized from cafeteria, hostel, and lab waste audits "
+        "documented in the ideation phase, rather than a final measured production statistic from a physical deployment.\n\n"
+        "Illustrative Stream-Specific Pilot Projections (3,000-Student Pilot):\n"
+        "• Campus Cafeteria Plastics: 82% Segregated (Projected)\n"
+        "• Hostel Dry Paper & Boxes: 76% Segregated (Projected)\n"
+        "• Mess Food Waste: 68% Composted (Projected)\n"
+        "• Departmental & Lab E-Waste: 55% Segregated (Projected)\n\n"
+        "Note: These values are conceptual projections from the project ideation phase and have not been validated through a physical campus deployment."
+    )
+
+    doc.add_heading("Future Enhancements (Future Scope)", level=2)
+    doc.add_paragraph(
         "• Multimodal Computer Vision (IBM Granite Vision image recognition at bin stations)\n"
         "• Multilingual voice and text input (Hindi, Tamil, Telugu)\n"
         "• Ultrasonic IoT fill-level bin sensors\n"

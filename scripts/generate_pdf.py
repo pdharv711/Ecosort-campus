@@ -227,7 +227,7 @@ def create_documentation_pdf():
         [Paragraph("<b>Project Domain:</b>", table_text), Paragraph("AI & Environmental Sustainability", table_text)],
         [Paragraph("<b>Primary SDG:</b>", table_text), Paragraph("SDG 12 — Responsible Consumption & Production (Target 12.5)", table_text)],
         [Paragraph("<b>Secondary SDG:</b>", table_text), Paragraph("SDG 11 — Sustainable Cities & Communities", table_text)],
-        [Paragraph("<b>AI Technology:</b>", table_text), Paragraph("IBM Granite Foundation Models (watsonx.ai) + Prompt Engineering", table_text)],
+        [Paragraph("<b>AI Architecture:</b>", table_text), Paragraph("IBM Granite watsonx.ai Integration + Deterministic Rule-Based Fallback", table_text)],
         [Paragraph("<b>Implementation:</b>", table_text), Paragraph("Next.js 16 (Turbopack), React 19, TypeScript, Tailwind CSS v4", table_text)],
         [Paragraph("<b>GitHub Repository:</b>", table_text), Paragraph("<font color='#2563eb'>https://github.com/pdharv711/Ecosort-campus</font>", table_text)],
         [Paragraph("<b>Documentation Type:</b>", table_text), Paragraph("Working Prototype Technical Report & Evaluation Evidence", table_text)],
@@ -320,9 +320,9 @@ def create_documentation_pdf():
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY_GREEN, spaceAfter=12))
 
     story.append(Paragraph(
-        "<b>EcoSort Campus</b> is an interactive, web-based decision-support assistant that leverages natural language "
-        "processing (NLP) and zero-shot entity extraction via <b>IBM Granite foundation models</b>. Rather than relying on "
-        "rigid keyword lookup or static charts, the user inputs natural descriptions of ambiguous waste items, and the system "
+        "<b>EcoSort Campus</b> is an interactive, web-based decision-support assistant designed to leverage natural language "
+        "processing (NLP) and zero-shot entity extraction with <b>IBM Granite foundation models</b>. Rather than relying on "
+        "rigid keyword lookup or static posters, the user inputs natural descriptions of ambiguous waste items, and the system "
         "resolves the material substrate, evaluates contamination potential, applies campus-specific norms, and enforces safety guardrails.",
         body_style
     ))
@@ -364,8 +364,8 @@ def create_documentation_pdf():
         bullet_style
     ))
     story.append(Paragraph(
-        "• <b>Rule-Based Fallback Engine (Demo Mode):</b> To guarantee uninterrupted demonstration and offline resilience "
-        "(e.g., during campus network outages or student evaluations), the system seamlessly fails over to an internal "
+        "• <b>Deterministic Rule-Based Fallback Engine:</b> To guarantee uninterrupted demonstration, offline resilience, "
+        "and evaluation reliability without external API dependencies, the system seamlessly fails over to an internal "
         "deterministic classification engine (<code>lib/wasteRules.ts</code>) that mirrors the identical JSON contract without exposing errors.",
         bullet_style
     ))
@@ -374,6 +374,25 @@ def create_documentation_pdf():
         "no API keys or credentials ever reach the client's browser bundle.",
         bullet_style
     ))
+
+    # Item 1 Requirement Note
+    story.append(Spacer(1, 4))
+    arch_note_box = Table([[
+        Paragraph(
+            "<b>Implementation Note on AI Execution:</b><br/>"
+            "The prototype includes IBM Granite watsonx.ai integration, with a deterministic rule-based fallback available for demonstration and offline operation. The documented benchmark results were verified using the available prototype classification pipeline.",
+            callout_style
+        )
+    ]], colWidths=[490])
+    arch_note_box.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#f0fdf4")),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#86efac")),
+        ('TOPPADDING', (0,0), (-1,-1), 6),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+    ]))
+    story.append(arch_note_box)
     story.append(PageBreak())
 
     # =========================================================================
@@ -401,18 +420,18 @@ def create_documentation_pdf():
         story.append(Image(hero_bins_img, width=470, height=190))
         story.append(Paragraph("Figure 1: EcoSort Campus Main Hero Interface with Campus Bin Legend & Input Form", caption_style))
 
-    story.append(Paragraph("<b>Step 2: AI Classification & Structured Response</b>", h2_style))
+    story.append(Paragraph("<b>Step 2: Prototype Classification & Structured Response</b>", h2_style))
     story.append(Paragraph(
         "Upon clicking '🔍 Analyse Waste', an animated loading state appears while the backend processes the item. "
         "The UI then auto-scrolls to display the color-coded result card containing material diagnosis, bin destination, "
-        "preparation steps, safety warnings, and the AI's contextual reasoning.",
+        "preparation steps, safety warnings, and contextual reasoning.",
         body_style
     ))
 
     result_pet_img = os.path.join(SCREENSHOTS_DIR, "03_result_pet_bottle.png")
     if os.path.exists(result_pet_img):
         story.append(Image(result_pet_img, width=470, height=220))
-        story.append(Paragraph("Figure 2: Real AI Classification Result for 'Crushed PET soft drink bottle' (Blue Bin / Dry Recyclable)", caption_style))
+        story.append(Paragraph("Figure 2: Verified Prototype Classification Result for 'Crushed PET soft drink bottle' (Blue Bin / Dry Recyclable)", caption_style))
 
     story.append(PageBreak())
 
@@ -471,7 +490,7 @@ def create_documentation_pdf():
     story.append(arch_table)
     story.append(Spacer(1, 12))
 
-    story.append(Paragraph("JSON Schema Specification Returned by AI:", h2_style))
+    story.append(Paragraph("JSON Schema Specification Returned by Classification Pipeline:", h2_style))
     json_spec = """{
   "item": "Crushed PET soft drink bottle",
   "material": "PET Plastic #1",
@@ -491,14 +510,14 @@ def create_documentation_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 6: CAMPUS BIN CLASSIFICATION
+    # PAGE 6: CAMPUS BIN CLASSIFICATION (Item 6 Correction)
     # =========================================================================
     story.append(Paragraph("5. Campus Bin Classification System", h1_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY_GREEN, spaceAfter=12))
 
     story.append(Paragraph(
         "EcoSort Campus categorizes all institutional waste streams into four distinct color-coded receptacles "
-        "aligned with Indian municipal solid-waste norms and campus operations:",
+        "aligned with the project's defined campus waste-management categories and operational requirements:",
         body_style
     ))
 
@@ -557,14 +576,14 @@ def create_documentation_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 7: AI CLASSIFICATION TEST CASES
+    # PAGE 7: PROTOTYPE EVALUATION & BENCHMARK TEST CASES (Item 2 Correction)
     # =========================================================================
-    story.append(Paragraph("6. Evaluation Test Cases (PPT Benchmark)", h1_style))
+    story.append(Paragraph("6. Prototype Evaluation & Benchmark Test Cases", h1_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY_GREEN, spaceAfter=12))
 
     story.append(Paragraph(
-        "To rigorously validate EcoSort Campus against the original project proposal, four specific reference test cases "
-        "defined in the project presentation were evaluated directly within the live running application:",
+        "Four reference test cases defined in the original project presentation were executed against the working "
+        "EcoSort Campus prototype to verify classification, bin assignment, and safety guidance:",
         body_style
     ))
 
@@ -618,7 +637,7 @@ def create_documentation_pdf():
     img_battery = os.path.join(SCREENSHOTS_DIR, "04_result_battery_hazardous.png")
     if os.path.exists(img_battery):
         story.append(Image(img_battery, width=470, height=200))
-        story.append(Paragraph("Figure 4: Real Prototype Output for '9V dead battery' featuring explicit hazard warnings & terminal taping instructions", caption_style))
+        story.append(Paragraph("Figure 4: Verified Prototype Output for '9V dead battery' featuring explicit hazard warnings & terminal taping instructions", caption_style))
 
     story.append(PageBreak())
 
@@ -697,25 +716,25 @@ def create_documentation_pdf():
     img_glass = os.path.join(SCREENSHOTS_DIR, "05_result_broken_glass_black.png")
     if os.path.exists(img_glass):
         story.append(Image(img_glass, width=470, height=210))
-        story.append(Paragraph("Figure 6: Live Output for 'Broken glass chemistry beaker' with Sharp Hazard Worker Warning & Black Bin Assignment", caption_style))
+        story.append(Paragraph("Figure 6: Verified Prototype Output for 'Broken glass chemistry beaker' with Sharp Hazard Worker Warning & Black Bin Assignment", caption_style))
 
     story.append(Spacer(1, 6))
 
     img_samosa = os.path.join(SCREENSHOTS_DIR, "06_result_samosa_green.png")
     if os.path.exists(img_samosa):
         story.append(Image(img_samosa, width=470, height=210))
-        story.append(Paragraph("Figure 7: Live Output for 'Oily samosa wrapper' redirecting grease-contaminated paper to Green Compost Bin", caption_style))
+        story.append(Paragraph("Figure 7: Verified Prototype Output for 'Oily samosa wrapper' redirecting grease-contaminated paper to Green Compost Bin", caption_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 10: TESTING & RESULTS
+    # PAGE 10: TESTING & RESULTS (Items 1, 3, 4 Corrections)
     # =========================================================================
     story.append(Paragraph("9. Verification & Testing Matrix", h1_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY_GREEN, spaceAfter=12))
 
     story.append(Paragraph(
-        "Automated end-to-end testing was conducted against the Next.js API endpoint (<code>/api/classify</code>) "
+        "Prototype verification testing was conducted against the Next.js API endpoint (<code>/api/classify</code>) "
         "and client UI form controls. Below is the verified test log:",
         body_style
     ))
@@ -784,36 +803,42 @@ def create_documentation_pdf():
         ('RIGHTPADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(tm_table)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
+
+    # Item 4: Testing limitation note
+    story.append(Paragraph(
+        "<b>Note:</b> These tests verify prototype behavior against selected reference inputs and do not represent a statistically significant accuracy evaluation or production-scale validation.",
+        ParagraphStyle('TestLimitation', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=8, leading=11, textColor=colors.HexColor("#4b5563"))
+    ))
+    story.append(Spacer(1, 6))
 
     img_examples = os.path.join(SCREENSHOTS_DIR, "07_examples_section.png")
     if os.path.exists(img_examples):
-        story.append(Image(img_examples, width=470, height=190))
-        story.append(Paragraph("Figure 8: Interactive PPT Test Cases Section allowing one-click evaluation of all four categories", caption_style))
+        story.append(Image(img_examples, width=470, height=180))
+        story.append(Paragraph("Figure 8: Interactive Benchmark Test Cases Section allowing one-click evaluation of all four categories", caption_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 11: EXPECTED IMPACT
+    # PAGE 11: EXPECTED IMPACT (Item 5 Corrections)
     # =========================================================================
-    story.append(Paragraph("10. Projected Impact & Campus Value", h1_style))
+    story.append(Paragraph("10. Projected / Estimated Impact & Campus Value", h1_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY_GREEN, spaceAfter=12))
 
     story.append(Paragraph(
         "The long-term objective of EcoSort Campus is to transition university waste operations from reactive landfill disposal "
-        "to proactive source segregation. The project slide deck establishes concrete pilot projections for campus deployment:",
+        "to proactive source segregation. The project slide deck establishes conceptual pilot projections for campus deployment:",
         body_style
     ))
 
     # Impact Highlight Box
     impact_box_data = [[
         Paragraph(
-            "<font size='11' color='#065f46'><b>Projected Pilot Impact (From Project Concept):</b></font><br/>"
-            "<i>'A pilot projection across a 3,000-student university campus indicates an average <b>70.2% overall diversion</b> "
+            "<font size='11' color='#065f46'><b>Projected / Estimated Impact (From Project Concept):</b></font><br/>"
+            "<i>'A pilot projection across a 3,000-student university campus indicates an estimated <b>70.2% overall diversion</b> "
             "of municipal solid waste away from local landfills within 60 days of deployment.'</i><br/><br/>"
-            "<font size='8' color='#475569'><b>Important Note on Methodology:</b> The 70.2% figure represents an estimated model projection "
-            "synthesized from cafeteria, hostel, and lab waste audits documented in the ideation phase, rather than a final measured "
-            "production statistic from a multi-year physical installation.</font>",
+            "<font size='8' color='#475569'><b>Important Note on Methodology:</b> The 70.2% figure represents a conceptual model projection "
+            "from the project ideation phase and has not been validated through a physical campus deployment. It is not an experimentally measured result.</font>",
             callout_style
         )
     ]]
@@ -829,27 +854,27 @@ def create_documentation_pdf():
     story.append(impact_box)
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("Stream-Specific Segregation Projections (3,000-Student Pilot):", h2_style))
+    story.append(Paragraph("Illustrative Stream-Specific Pilot Projections (3,000-Student Pilot):", h2_style))
     stream_data = [
-        [Paragraph("<b>Campus Waste Stream</b>", table_header), Paragraph("<b>Projected Segregation</b>", table_header), Paragraph("<b>Operational Transformation</b>", table_header)],
+        [Paragraph("<b>Campus Waste Stream</b>", table_header), Paragraph("<b>Projected Segregation</b>", table_header), Paragraph("<b>Operational Focus</b>", table_header)],
         [
             Paragraph("<b>Campus Cafeteria Plastics</b>", table_text),
-            Paragraph("<font color='#16a34a'><b>82% Segregated</b></font>", table_text),
+            Paragraph("<font color='#16a34a'><b>82% Segregated (Projected)</b></font>", table_text),
             Paragraph("Reduction in food grease cross-contamination; PET bottles compressed and clean.", table_text)
         ],
         [
             Paragraph("<b>Hostel Dry Paper & Boxes</b>", table_text),
-            Paragraph("<font color='#2563eb'><b>76% Segregated</b></font>", table_text),
+            Paragraph("<font color='#2563eb'><b>76% Segregated (Projected)</b></font>", table_text),
             Paragraph("E-commerce delivery cardboard flattened and preserved in dry state for recycling.", table_text)
         ],
         [
             Paragraph("<b>Mess Food Waste</b>", table_text),
-            Paragraph("<font color='#ca8a04'><b>68% Composted</b></font>", table_text),
+            Paragraph("<font color='#ca8a04'><b>68% Composted (Projected)</b></font>", table_text),
             Paragraph("Organic scraps systematically routed to campus aerobic compost pits.", table_text)
         ],
         [
             Paragraph("<b>Departmental & Lab E-Waste</b>", table_text),
-            Paragraph("<font color='#dc2626'><b>55% Segregated</b></font>", table_text),
+            Paragraph("<font color='#dc2626'><b>55% Segregated (Projected)</b></font>", table_text),
             Paragraph("Dead batteries and components diverted to authorized e-waste dismantling facilities.", table_text)
         ]
     ]
@@ -865,6 +890,12 @@ def create_documentation_pdf():
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(stream_table)
+    story.append(Spacer(1, 8))
+
+    story.append(Paragraph(
+        "<b>Important Note:</b> These values are conceptual projections from the project ideation phase and have not been validated through a physical campus deployment.",
+        ParagraphStyle('ImpactDisclaimer', parent=styles['Normal'], fontName='Helvetica-Oblique', fontSize=8, leading=11, textColor=colors.HexColor("#4b5563"))
+    ))
     story.append(PageBreak())
 
     # =========================================================================
@@ -875,7 +906,7 @@ def create_documentation_pdf():
 
     story.append(Paragraph(
         "<b>Conclusion:</b> EcoSort Campus demonstrates that purposeful, lightweight AI workflows can transform "
-        "everyday student habits into measurable environmental progress. By uniting <b>IBM Granite foundation models</b>, "
+        "everyday student habits into measurable environmental progress. By combining <b>IBM Granite foundation models</b>, "
         "prompt engineering, entity extraction, and strict responsible AI principles, the prototype successfully bridges "
         "the gap between static signage and dynamic real-world disposal dilemmas.",
         body_style
