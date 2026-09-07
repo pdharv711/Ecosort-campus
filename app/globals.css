@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --green-bin: #16a34a;
+  --blue-bin: #2563eb;
+  --red-bin: #dc2626;
+  --black-bin: #1c1917;
+}
+
+body {
+  background-color: #f0fdf4;
+  color: #1a2e05;
+}
+
+.bin-green { background-color: #16a34a; }
+.bin-blue  { background-color: #2563eb; }
+.bin-red   { background-color: #dc2626; }
+.bin-black { background-color: #1c1917; }
+
+.bin-green-border { border-color: #16a34a; }
+.bin-blue-border  { border-color: #2563eb; }
+.bin-red-border   { border-color: #dc2626; }
+.bin-black-border { border-color: #1c1917; }
+
+.bin-green-text { color: #16a34a; }
+.bin-blue-text  { color: #2563eb; }
+.bin-red-text   { color: #dc2626; }
+.bin-black-text { color: #1c1917; }
+
+.bin-green-bg { background-color: #f0fdf4; }
+.bin-blue-bg  { background-color: #eff6ff; }
+.bin-red-bg   { background-color: #fef2f2; }
+.bin-black-bg { background-color: #f5f5f4; }
