@@ -15,6 +15,16 @@
 
 ---
 
+## 📄 Prototype Documentation
+
+Comprehensive technical documentation and academic project reports for the working prototype are available in the [`docs/`](./docs) directory:
+
+- 📕 **[EcoSort Campus Prototype Documentation (PDF)](./docs/EcoSort_Campus_Prototype_Documentation.pdf)** — Full 12-page technical report containing problem definition, system architecture, campus bin logic, real UI screenshots, evaluation test matrix, responsible AI framework, and projected impact analysis.
+- 📘 **[EcoSort Campus Prototype Documentation (DOCX)](./docs/EcoSort_Campus_Prototype_Documentation.docx)** — Editable companion document.
+- 📸 **[Live Interface Screenshots](./docs/screenshots/)** — High-resolution captures of the live web application and test case results.
+
+---
+
 ## 🚨 Problem Statement
 
 Over **60% of recyclable materials** on campus end up in landfills due to cross-contamination in high-traffic bins. Students and hostel residents regularly struggle with everyday packaging such as:
