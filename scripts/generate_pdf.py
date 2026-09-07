@@ -504,7 +504,7 @@ def create_documentation_pdf():
 
     how_works_img = os.path.join(SCREENSHOTS_DIR, "08_how_it_works.png")
     if os.path.exists(how_works_img):
-        story.append(Image(how_works_img, width=470, height=190))
+        story.append(Image(how_works_img, width=470, height=130))
         story.append(Paragraph("Figure 3: Interactive 'How EcoSort Works' Workflow Pipeline rendered on the live UI", caption_style))
 
     story.append(PageBreak())
